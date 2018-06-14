@@ -3,33 +3,19 @@ const {
   insertUser,
   findUserById
 } = require('../libs/mysql.base');
+/**
+ * 验证token中间件
+ */
+const authorize = require('../controllers/authorize')
 
-router.get('/', async (ctx, next) => {
-  await ctx.render('index', {
-    title: 'Hello Koa 2!'
-  })
+router.get('/', authorize, async (ctx, next) => {
+  ctx.response.body = ctx.response.body + ', I am.'
 })
 
-router.get('/string', async (ctx, next) => {
+router.get('/token', async (ctx, next) => {
   const id = parseInt(ctx.query.id)
   const user = await findUserById(id)
   ctx.response.body = user[0]
-})
-
-router.post('/string', async (ctx, next) => {
-  const formData = ctx.request.body
-
-  await insertUser(formData)
-  ctx.response.body = {
-    code: 0,
-    msg: 'success'
-  }
-})
-
-router.get('/json', async (ctx, next) => {
-  ctx.body = {
-    title: 'koa2 json'
-  }
 })
 
 module.exports = router

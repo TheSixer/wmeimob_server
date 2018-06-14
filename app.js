@@ -5,11 +5,13 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+const cors = require('koa-cors')
 const session = require('koa-session-minimal')
 const MysqlStore = require('koa-mysql-session')
+
 const config = require('./config/default.js')
 
-const { initRoute }  = require('./routes/routes')
+const initRoute  = require('./routes/routes')
 
 // session存储配置
 const sessionMysqlConfig= {
@@ -21,6 +23,10 @@ const sessionMysqlConfig= {
 
 // error handler
 onerror(app)
+/**
+ * 处理跨域问题
+ */
+app.use(cors())
 
 // middlewares
 app.use(bodyparser({
