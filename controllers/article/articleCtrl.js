@@ -1,6 +1,7 @@
 const {
   newArticle,
-  queryAllPosts
+  queryAllPosts,
+  queryPostsById
 } = require('../../modules/article')
 
 class articleCtrl {
@@ -8,6 +9,7 @@ class articleCtrl {
   static async queryAll (ctx) {
 
     const data = await queryAllPosts()
+    console.log(data);
     ctx.response.body = {
       code: 0,
       data,
@@ -29,6 +31,20 @@ class articleCtrl {
     ctx.response.body = {
       code: 0,
       msg: 'success'
+    }
+  }
+
+  static async queryPostsById (ctx, next) {
+    const { id } = ctx.params
+    if (!isNaN(Number(id))) {
+      const data = await queryPostsById(id)
+      ctx.response.body = data[0]
+    } else {
+      ctx.response.status = 404
+      ctx.response.body = {
+        code: -1,
+        msg: '文章不存在'
+      }
     }
   }
 }

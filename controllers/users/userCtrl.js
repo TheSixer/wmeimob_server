@@ -15,7 +15,7 @@ class userCtrl {
     let password = decipher.update(pwd,'hex','utf8')
         password += decipher.final('utf8')
     /*
-      判断手机号是否存在
+      判断手机号是否注册
      */
     const user = await verifyingPhone(phone)
 
@@ -25,8 +25,7 @@ class userCtrl {
         msg: '该手机号已注册'
       }
     } else {
-      const params = { phone, pwd }
-
+      let params = { phone, pwd }
       const data = await insertUser(params)
       /**
        * 拿到返回的用户ID生成token

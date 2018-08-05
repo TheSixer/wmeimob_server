@@ -23,12 +23,6 @@ const createTable = function(sql) {
 // 建表
 createTable(posts)
 
-// 查找所有文章
-const queryAllPosts = async function(value) {
-  const now = (new Date().getTime())
-  let _sql = `select * from posts;`
-  return await query( _sql, value)
-}
 
 // 新增文章
 const newArticle = async function(value) {
@@ -43,8 +37,20 @@ const newArticle = async function(value) {
   ) values('${value.uid}','${value.title}','${value.content}','${now}','${now}','${now}');`
   return await query( _sql, value)
 }
+// 查找所有文章
+const queryAllPosts = async function(value) {
+  const now = (new Date().getTime())
+  let _sql = `select * from posts;`
+  return await query( _sql, value)
+}
+// 根据id查找文章
+const queryPostsById = async function(value) {
+  const _sql = `SELECT * from posts where id='${value}'`
+  return await query( _sql, value)
+}
 
 module.exports = {
   newArticle,
-  queryAllPosts
+  queryAllPosts,
+  queryPostsById
 }
